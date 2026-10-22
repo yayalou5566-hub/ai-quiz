@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 算力大測檢 - 測測你的動漫級 AI 學歷</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --card-border: rgba(99, 102, 241, 0.35);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #38bdf8;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --glow: rgba(99, 102, 241, 0.5);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-color) 70%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 50px 20px;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 32px;
+            padding: 50px;
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        /* 頂端導航列區塊（左上角計數器 + 右上角語言） */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* 2046 未來感計數器樣式（放在左上角） */
+        .counter-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 8px 16px;
+            border-radius: 40px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+        }
+
+        .counter-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .counter-digits {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .lang-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(56, 189, 248, 0.08) 100%);
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-card h1 {
+            color: #818cf8;
+            margin-top: 0;
+            font-size: 2.2rem;
+            text-align: center;
+            letter-spacing: -0.5px;
+            margin-bottom: 18px;
+            text-shadow: 0 2px 15px rgba(129, 140, 248, 0.4);
+        }
+
+        .intro-quote {
+            font-style: italic;
+            color: var(--accent);
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .intro-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            color: var(--accent);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+            padding-bottom: 12px;
+            margin-top: 50px;
+            margin-bottom: 24px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 18px 22px;
+            border-radius: 16px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .question-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(129, 140, 248, 0.5);
+            transform: translateX(6px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .question-item input[type="checkbox"] {
+            margin-top: 4px;
+            margin-right: 18px;
+            transform: scale(1.4);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        button.action-btn {
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 18px 45px rgba(99, 102, 241, 0.8);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+        }
+
+        #result-card {
+            display: none;
+            margin-top: 60px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border: 2px solid #818cf8;
+            border-radius: 28px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.5);
+            animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(25px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .result-score {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin: 15px 0;
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: #f43f5e;
+            font-weight: bold;
+            margin-bottom: 16px;
+            text-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
+        }
+
+        .result-chip {
+            font-size: 1.3rem;
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent);
+            padding: 10px 28px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 25px;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            font-weight: 600;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .result-desc {
+            color: #d1d5db;
+            font-size: 1.1rem;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 28px;
+            border-radius: 18px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 頂端導航列：左上角計數器 + 右上角語系切換 -->
+    <div class="top-bar">
+        <div class="counter-badge">
+            <span class="counter-label" id="counterLabel">🚀 2046 總檢測人數：</span>
+            <span class="counter-digits" id="visitorCount">0002046</span>
+        </div>
+        <div class="lang-bar">
+            <button class="lang-btn active" onclick="switchLang('zh-Hant')">繁體中文</button>
+            <button class="lang-btn" onclick="switchLang('zh-Hans')">简体中文</button>
+            <button class="lang-btn" onclick="switchLang('en')">English</button>
+            <button class="lang-btn" onclick="switchLang('pt')">Português</button>
+            <button class="lang-btn" onclick="switchLang('ja')">日本語</button>
+        </div>
+    </div>
+
+    <div class="intro-card">
+        <h1 id="introTitle">🧠 AI 算力大測檢：你的「AI 學歷」畢業了嗎？</h1>
+        <div class="intro-quote" id="introQuote">「世界不是被 AI 取代，而是被『先學會 AI』的人取代！」</div>
+        <div class="intro-text" id="introText1">這兩三年 AI 爆發，ChatGPT、Claude、Midjourney 滿天飛。每個人都在聊 AI，但……你寫的 Prompt（指令）真的及格嗎？你的工作效率真的有翻倍嗎？還是你其實只是把地表最強大腦，當成「比較聰明的 Google 搜尋」和「聊天機器人」在用？</div>
+        <div class="intro-text" id="introText2">這不是一份無聊的期末考，不考你寫程式，也不考高深理論。我們特別設計了 32 個「超日常、超血淚」的 AI 應用場景。只要 3 分鐘，勾選你實際做過且熟練的項目，立刻解鎖你的個人 AI 晶片等級！</div>
+    </div>
+
+    <form id="quizForm" onsubmit="return false;">
+        <div class="section-title" id="sec1">一、👶 幼稚園班：大雄型（AI 聽風者）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="1"><span class="question-text" data-qid="0">1. 我曾親自登入並使用過 ChatGPT、Copilot、Gemini 或 Claude 其中至少一種主流 AI 工具。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="2"><span class="question-text" data-qid="1">2. 我曾叫 AI 幫我做簡單的休閒或生活搜尋（例如：問今天天氣、查詢名人生平、或講個笑話）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="3"><span class="question-text" data-qid="2">3. 我曾讓 AI 幫忙草擬過極其簡單的日常短訊（例如：寫請假條、祝賀詞、日常 Email）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="4"><span class="question-text" data-qid="3">4. 我曾把看不懂的外文整段貼給 AI，直接叫它幫我翻譯成繁體中文。</span></label>
+
+        <div class="section-title" id="sec2">二、🎒 初小階段：小丸子型（被動伸手黨）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="5"><span class="question-text" data-qid="4">5. 我曾直接叫 AI 幫我寫日常作業、短篇文章或社交平台貼文的草稿。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="6"><span class="question-text" data-qid="5">6. 當 AI 給出答案後，我通常直接「一鍵複製貼上」，甚至連留白括號（如 [請填入日期]）都忘了改。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="7"><span class="question-text" data-qid="6">7. 當 AI 答錯或胡言亂語（幻覺）時，會覺得「AI 其實很笨」而直接放棄，不會嘗試糾正。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="8"><span class="question-text" data-qid="7">8. 我習慣把 AI 當成更直覺的 Google 搜尋，直接問它問題，而不是去翻閱網頁找答案。</span></label>
+
+        <div class="section-title" id="sec3">三、🎒 高小階段：蠟筆小新型（指令初體驗）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="9"><span class="question-text" data-qid="8">9. 我在下指令時，開始懂得幫 AI 設定專屬身份（例如開頭寫：「請扮演專業的英文老師、行銷經理…」）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="10"><span class="question-text" data-qid="9">10. 我會在指令中初步約束 AI 的呈現形式（例如要求「用表格呈現」、「列出 5 個重點」）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="11"><span class="question-text" data-qid="10">11. 當 AI 第一次輸出不合心意時，我學會了繼續發訊息修正它（例如：「不對，請把語氣改幽默點」）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="12"><span class="question-text" data-qid="11">12. 我曾親自嘗試過 AI 繪圖工具（如 Midjourney、DALL-E 3），並成功生成過自己的圖片。</span></label>
+
+        <div class="section-title" id="sec4">四、🏫 初中階段：柯南型（萬能導演與脈絡提供者）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="13"><span class="question-text" data-qid="12">13. 我知道提問時不能只丟一句話，而是會補充背景資料或情境，讓 AI 寫出的東西更貼近需求。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="14"><span class="question-text" data-qid="13">14. 我會把長篇 PDF 報告或新聞連結直接丟給 AI，叫它在幾秒內幫我梳理出核心摘要。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="15"><span class="question-text" data-qid="14">15. 我知道如何利用 AI 幫我編寫或除錯簡單的 Excel 公式（如 VLOOKUP）或基礎網頁代碼（HTML）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="16"><span class="question-text" data-qid="15">16. 我曾熟練使用內建在各大辦公軟體中的 AI 助手（例如 Notion AI、Microsoft 365 Copilot）。</span></label>
+
+        <div class="section-title" id="sec5">五、🏫 高中階段：鳴人型（影分身生產力專家）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="17"><span class="question-text" data-qid="16">17. 我開會或聽講座時會使用 AI 語音轉文字工具，並讓 AI 自動提煉出會議重點與待辦事項。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="18"><span class="question-text" data-qid="17">18. 我會針對不同任務交叉使用不同 AI 模型（寫代碼用 Claude，邏輯思考用 o1/o3，日常用 GPT-4o）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="19"><span class="question-text" data-qid="18">19. 我會利用 AI 做深度數據分析（上傳銷售 Excel 檔案，叫 AI 畫趨勢圖並分析業績下滑原因）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="20"><span class="question-text" data-qid="19">20. 我懂得利用多模態能力（拍壞掉的機器零件照片或手寫草稿上傳，讓 AI 診斷或轉電子檔）。</span></label>
+
+        <div class="section-title" id="sec6">六、🎓 大學本科階段：布瑪型（進階發明與自訂機器人）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="21"><span class="question-text" data-qid="20">21. 我曾建立過自己專屬的 Custom GPTs 或自定義機器人來處理日常重複性工作。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="22"><span class="question-text" data-qid="21">22. 我能利用 AI 將日常文書或資料整理時間縮短 50% 以上，建立個人的「AI 工具鏈」。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="23"><span class="question-text" data-qid="22">23. 我懂得引導 AI 進行多步驟邏輯推導，要求 AI 說明思考過程而非單純拿現成答案。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="24"><span class="question-text" data-qid="23">24. 我能利用 AI 獨立完成小型程式碼腳本編寫（如 Python 小工具），自動化處理電腦雜務。</span></label>
+
+        <div class="section-title" id="sec7">七、🧑‍🔬 碩士生階段：鋼鐵人型（賈維斯自動化管家）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="25"><span class="question-text" data-qid="24">25. 我懂得利用自動化工具（Make、Zapier、n8n）將 AI 串聯進現有工作流（收到信自動讓 AI 回信）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="26"><span class="question-text" data-qid="25">26. 我曾利用知識庫（RAG）技術上傳海量資料，打造「絕不胡言亂語」的專屬客服或個人助理。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="27"><span class="question-text" data-qid="26">27. 我能熟練使用進階提示詞技巧（Chain-of-Thought 思考鏈、Few-shot 少量樣本）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="28"><span class="question-text" data-qid="27">28. 我懂得利用 AI Agent 工具（Dify、Coze、CrewAI）讓多個 AI 扮演不同角色協同工作。</span></label>
+
+        <div class="section-title" id="sec8">八、🚀 博士生／院士階段：多啦A夢型（頂級開源造物主）</div>
+        <label class="question-item"><input type="checkbox" name="q" value="29"><span class="question-text" data-qid="28">29. 我曾在本機或雲端伺服器部署過開源大語言模型（如 Llama 3、DeepSeek、Mistral）。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="30"><span class="question-text" data-qid="29">30. 我曾用自己的專業數據對開源模型進行過 Fine-tuning（微調）或客製化訓練。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="31"><span class="question-text" data-qid="30">31. 我在開發中不使用網頁介面，而是直接呼叫 AI API 並精準計算與控制 Token 成本。</span></label>
+        <label class="question-item"><input type="checkbox" name="q" value="32"><span class="question-text" data-qid="31">32. 我能自己編寫代碼擴充 AI 能力（寫 Tool/Plugin 讓 AI 自主調用外部資料庫或硬件）。</span></label>
+
+        <div class="btn-container">
+            <button type="button" class="action-btn btn-primary" onclick="calculateScore()">立即計算我的 AI 算力！ ⚡</button>
+            <button type="button" class="action-btn btn-secondary" onclick="resetQuiz()">重新測試 🔄</button>
+        </div>
+    </form>
+
+    <div id="result-card">
+        <div style="font-size: 1rem; color: var(--text-muted);" id="resLabel">您的總得分</div>
+        <div class="result-score" id="scoreDisplay">0 / 32 分</div>
+        <div class="result-chip" id="chipDisplay">動漫代表角色</div>
+        <div class="result-title" id="titleDisplay">學歷稱號</div>
+        <div class="result-desc" id="descDisplay">詳細診斷結果...</div>
+    </div>
+</div>
+
+<script>
+const langDatabase = {
+    'zh-Hant': {
+        title: "🧠 AI 算力大測檢：你的「AI 學歷」畢業了嗎？",
+        quote: "「世界不是被 AI 取代，而是被『先學會 AI』的人取代！」",
+        t1: "這兩三年 AI 爆發，ChatGPT、Claude、Midjourney 滿天飛。每個人都在聊 AI，但……你寫的 Prompt（指令）真的及格嗎？你的工作效率真的有翻倍嗎？還是你其實只是把地表最強大腦，當成「比較聰明的 Google 搜尋」和「聊天機器人」在用？",
+        t2: "這不是一份無聊的期末考，不考你寫程式，也不考高深理論。我們特別設計了 32 個「超日常、超血淚」的 AI 應用場景。只要 3 分鐘，勾選你實際做過且熟練的項目，立刻解鎖你的個人 AI 晶片等級！",
+        calc: "立即計算我的 AI 算力！ ⚡",
+        reset: "重新測試 🔄",
+        res: "您的總得分",
+        counterText: "🚀 2046 總檢測人數：",
+        secs: [
+            "一、👶 幼稚園班：大雄型（AI 聽風者）",
+            "二、🎒 初小階段：小丸子型（被動伸手黨）",
+            "三、🎒 高小階段：蠟筆小新型（指令初體驗）",
+            "四、🏫 初中階段：柯南型（萬能導演與脈絡提供者）",
+            "五、🏫 高中階段：鳴人型（影分身生產力專家）",
+            "六、🎓 大學本科階段：布瑪型（進階發明與自訂機器人）",
+            "七、🧑‍🔬 碩士生階段：鋼鐵人型（賈維斯自動化管家）",
+            "八、🚀 博士生／院士階段：多啦A夢型（頂級開源造物主）"
+        ],
+        qs: [
+            "1. 我曾親自登入並使用過 ChatGPT、Copilot、Gemini 或 Claude 其中至少一種主流 AI 工具。",
+            "2. 我曾叫 AI 幫我做簡單的休閒或生活搜尋（例如：問今天天氣、查詢名人生平、或講個笑話）。",
+            "3. 我曾讓 AI 幫忙草擬過極其簡單的日常短訊（例如：寫請假條、祝賀詞、日常 Email）。",
+            "4. 我曾把看不懂的外文整段貼給 AI，直接叫它幫我翻譯成繁體中文。",
+            "5. 我曾直接叫 AI 幫我寫日常作業、短篇文章或社交平台貼文的草稿。",
+            "6. 當 AI 給出答案後，我通常直接「一鍵複製貼上」，甚至連留白括號（如 [請填入日期]）都忘了改。",
+            "7. 當 AI 答錯或胡言亂語（幻覺）時，會覺得「AI 其實很笨」而直接放棄，不會嘗試糾正。",
+            "8. 我習慣把 AI 當成更直覺的 Google 搜尋，直接問它問題，而不是去翻閱網頁找答案。",
+            "9. 我在下指令時，開始懂得幫 AI 設定專屬身份（例如開頭寫：「請扮演專業的英文老師、行銷經理…」）。",
+            "10. 我會在指令中初步約束 AI 的呈現形式（例如要求「用表格呈現」、「列出 5 個重點」）。",
+            "11. 當 AI 第一次輸出不合心意時，我學會了繼續發訊息修正它（例如：「不對，請把語氣改幽默點」）。",
+            "12. 我曾親自嘗試過 AI 繪圖工具（如 Midjourney、DALL-E 3），並成功生成過自己的圖片。",
+            "13. 我知道提問時不能只丟一句話，而是會補充背景資料或情境，讓 AI 寫出的東西更貼近需求。",
+            "14. 我會把長篇 PDF 報告或新聞連結直接丟給 AI，叫它在幾秒內幫我梳理出核心摘要。",
+            "15. 我知道如何利用 AI 幫我編寫或除錯簡單的 Excel 公式（如 VLOOKUP）或基礎網頁代碼（HTML）。",
+            "16. 我曾熟練使用內建在各大辦公軟體中的 AI 助手（例如 Notion AI、Microsoft 365 Copilot）。",
+            "17. 我開會或聽講座時會使用 AI 語音轉文字工具，並讓 AI 自動提煉出會議重點與待辦事項。",
+            "18. 我會針對不同任務交叉使用不同 AI 模型（寫代碼用 Claude，邏輯思考用 o1/o3，日常用 GPT-4o）。",
+            "19. 我會利用 AI 做深度數據分析（上傳銷售 Excel 檔案，叫 AI 畫趨勢圖並分析業績下滑原因）。",
+            "20. 我懂得利用多模態能力（拍壞掉的機器零件照片或手寫草稿上傳，讓 AI 診斷或轉電子檔）。",
+            "21. 我曾建立過自己專屬的 Custom GPTs 或自定義機器人來處理日常重複性工作。",
+            "22. 我能利用 AI 將日常文書或資料整理時間縮短 50% 以上，建立個人的「AI 工具鏈」。",
+            "23. 我懂得引導 AI 進行多步驟邏輯推導，要求 AI 說明思考過程而非單純拿現成答案。",
+            "24. 我能利用 AI 獨立完成小型程式碼腳本編寫（如 Python 小工具），自動化處理電腦雜務。",
+            "25. 我懂得利用自動化工具（Make、Zapier、n8n）將 AI 串聯進現有工作流（收到信自動讓 AI 回信）。",
+            "26. 我曾利用知識庫（RAG）技術上傳海量資料，打造「絕不胡言亂語」的專屬客服或個人助理。",
+            "27. 我能熟練使用進階提示詞技巧（Chain-of-Thought 思考鏈、Few-shot 少量樣本）。",
+            "28. 我懂得利用 AI Agent 工具（Dify、Coze、CrewAI）讓多個 AI 扮演不同角色協同工作。",
+            "29. 我曾在本機或雲端伺服器部署過開源大語言模型（如 Llama 3、DeepSeek、Mistral）。",
+            "30. 我曾用自己的專業數據對開源模型進行過 Fine-tuning（微調）或客製化訓練。",
+            "31. 我在開發中不使用網頁介面，而是直接呼叫 AI API 並精準計算與控制 Token 成本。",
+            "32. 我能自己編寫代碼擴充 AI 能力（寫 Tool/Plugin 讓 AI 自主調用外部資料庫或硬件）。"
+        ],
+        results: [
+            { min: 1, max: 4, title: "幼稚園班 (AI 聽風者)", chip: "🧸 代表角色：大雄（多啦A夢）", desc: "你對 AI 還停留在「聽過、試過」的階段，遇到問題只會找 Google 或聊天機器人，多啦A夢就在你面前你卻只拿它來拿衛生紙！" },
+            { min: 5, max: 8, title: "初小階段 (被動伸手黨)", chip: "🎒 代表角色：櫻桃小丸子", desc: "你把 AI 當成趕作業的救星，習慣一鍵複製貼上。主導權完全在 AI 手上，下次試著對它提出修改要求看看！" },
+            { min: 9, max: 12, title: "高小階段 (指令初體驗)", chip: "💥 代表角色：野原新之助（蠟筆小新）", desc: "你開始懂得給 AI 設身份、定格式，還會糾正它的錯誤！你已經掌握了跟 AI 鬥智的樂趣！" },
+            { min: 13, max: 16, title: "初中階段 (脈絡提供者)", chip: "🔍 代表角色：江戶川柯南", desc: "你是 AI 界的萬能導演！懂得提供豐富的背景脈絡與情境，讓 AI 幫你精準破案、產出高質感的長篇摘要與文書。" },
+            { min: 17, max: 20, title: "高中階段 (生產力專家)", chip: "🍥 代表角色：漩渦鳴人（影分身之術）", desc: "太強啦！你學會了「影分身之術」，開會、寫程式、數據分析同時開工，AI 已經成為你的全職數位秘書！" },
+            { min: 21, max: 24, title: "大學本科 (進階定制者)", chip: "🛠️ 代表角色：布瑪（龍珠發明家）", desc: "你不只用工具，你還懂得自己打造專屬的 Custom GPTs 機器人和小腳本，是職場上的超級發明家！" },
+            { min: 25, max: 28, title: "碩士生 (流程自動化者)", chip: "🤖 代表角色：鋼鐵人（賈維斯管家）", desc: "你建立了自己的自動化生態！人不在電腦前，工作也能透過自動化工具與 AI 協同運作！" },
+            { min: 29, max: 32, title: "博士生／院士 (頂級開源神人)", chip: "🚪 代表角色：多啦A夢（造物主級別）", desc: "神人級別！看透底層邏輯、本機部署、微調訓練與 API 開發，你就是走在時代最前端的 AI 架構師！" }
+        ],
+        empty: { title: "尚未勾選任何項目", chip: "💤 代表角色：還在睡覺的胖虎", desc: "你好像還沒有勾選任何項目喔！快去勾選幾項來計算你的真實 AI 算力吧！" }
+    },
+    'zh-Hans': {
+        title: "🧠 AI 算力大测检：你的「AI 学历」毕业了吗？",
+        quote: "“世界不是被 AI 取代，而是被‘先学会 AI’的人取代！”",
+        t1: "这两三年 AI 爆发，ChatGPT、Claude、Midjourney 满天飞。每个人都在聊 AI，但……你写的 Prompt（指令）真的及格吗？你的工作效率真的有翻倍吗？还是你其实只是把地表最强大脑，当成“比较聪明的 Google 搜索”和“聊天机器人”在用？",
+        t2: "这不是一份无聊的期末考，不考你写代码，也不考高深理论。我们特别设计了 32 个“超日常、超血泪”的 AI 应用场景。只要 3 分钟，勾选你实际做过且熟练的项目，立刻解锁你的个人 AI 芯片等级！",
+        calc: "立即计算我的 AI 算力！ ⚡",
+        reset: "重新测试 🔄",
+        res: "您的总得分",
+        counterText: "🚀 2046 总检测人数：",
+        secs: [
+            "一、👶 幼儿园班：大雄型（AI 听风者）",
+            "二、🎒 初小阶段：小丸子型（被动伸手党）",
+            "三、🎒 高小阶段：蜡笔小新型（指令初体验）",
+            "四、🏫 初中阶段：柯南型（万能导演与脉络提供者）",
+            "五、🏫 高中阶段：鸣人型（影分身生产力专家）",
+            "六、🎓 大学本科阶段：布玛型（进阶发明与自订机器人）",
+            "七、🧑‍🔬 硕士生阶段：钢铁侠型（贾维斯自动化管家）",
+            "八、🚀 博士生／院士阶段：哆啦A梦型（顶级开源造物主）"
+        ],
+        qs: [
+            "1. 我曾亲自登录并使用过 ChatGPT、Copilot、Gemini 或 Claude 其中至少一种主流 AI 工具。",
+            "2. 我曾叫 AI 帮我做简单的休闲或生活搜索（例如：问今天天气、查询名人生平、或讲个笑话）。",
+            "3. 我曾让 AI 帮忙草拟过极其简单的日常短讯（例如：写请假条、祝贺词、日常 Email）。",
+            "4. 我曾把看不懂的外文整段贴给 AI，直接叫它帮我翻译成简体中文。",
+            "5. 我曾直接叫 AI 帮我写日常作业、短篇文章或社交平台贴文的草稿。",
+            "6. 当 AI 给出答案后，我通常直接「一键复制粘贴」，甚至连留白括号都忘了改。",
+            "7. 当 AI 答错或胡言乱语（幻觉）时，我会觉得「AI 其实很笨」而直接放弃，不会尝试纠正。",
+            "8. 我习惯把 AI 当成更直觉的 Google 搜索，直接问它问题，而不是去翻阅网页找答案。",
+            "9. 我在下指令时，开始懂得帮 AI 设定专属身份（例如开头写：「请扮演专业的英文老师、营销经理…」）。",
+            "10. 我会在指令中初步约束 AI 的呈现形式（例如要求「用表格呈现」、「列出 5 个重点」）。",
+            "11. 当 AI 第一次输出不合心意时，我学会了继续发消息修正它（例如：「不对，请把语气改幽默点」）。",
+            "12. 我曾亲自尝试过 AI 绘图工具（如 Midjourney、DALL-E 3），并成功生成过自己的图片。",
+            "13. 我知道提问时不能只丢一句话，而是会补充背景资料或情境，让 AI 写出的东西更贴近需求。",
+            "14. 我会把长篇 PDF 报告或新闻链接直接丢给 AI，叫它在几秒内帮我梳理出核心摘要。",
+            "15. 我知道如何利用 AI 帮我编写或调试简单的 Excel 公式（如 VLOOKUP）或基础网页代码（HTML）。",
+            "16. 我曾熟练使用内建在各大办公软件中的 AI 助手（例如 Notion AI、Microsoft 365 Copilot）。",
+            "17. 我开会或听讲座时会使用 AI 语音转文字工具，并让 AI 自动提炼出会议重点与待办事项。",
+            "18. 我会针对不同任务交叉使用不同 AI 模型（写代码用 Claude，逻辑思考用 o1/o3，日常用 GPT-4o）。",
+            "19. 我会利用 AI 做深度数据分析（上传销售 Excel 文件，叫 AI 画趋势图并分析业绩下滑原因）。",
+            "20. 我懂得利用多模态能力（拍坏掉的机器零件照片或手写草稿上传，让 AI 诊断或转电子档）。",
+            "21. 我曾建立过自己专属的 Custom GPTs 或自定义机器人来处理日常重复性工作。",
+            "22. 我能利用 AI 将日常文档或资料整理时间缩短 50% 以上，建立个人的「AI 工具链」。",
+            "23. 我懂得引导 AI 进行多步骤逻辑推导，要求 AI 说明思考过程而非单纯拿现成答案。",
+            "24. 我能利用 AI 独立完成小型代码脚本编写（如 Python 小工具），自动化处理电脑杂务。",
+            "25. 我懂得利用自动化工具（Make、Zapier、n8n）将 AI 串联进现有工作流（收到信自动让 AI 回信）。",
+            "26. 我曾利用知识库（RAG）技术上传海量资料，打造「绝不胡言乱语」的专属客服或个人助理。",
+            "27. 我能熟练使用进阶提示词技巧（Chain-of-Thought 思考链、Few-shot 少量样本）。",
+            "28. 我懂得利用 AI Agent 工具（Dify、Coze、CrewAI）让多个 AI 扮演不同角色协同工作。",
+            "29. 我曾在本机或云端服务器部署过开源大语言模型（如 Llama 3、DeepSeek、Mistral）。",
+            "30. 我曾用自己的专业数据对开源模型进行过 Fine-tuning（微调）或客制化训练。",
+            "31. 我在开发中不使用网页界面，而是直接呼叫 AI API 并精准计算与控制 Token 成本。",
+            "32. 我能自己编写代码扩充 AI 能力（写 Tool/Plugin 让 AI 自主调用外部数据库或硬件）。"
+        ],
+        results: [
+            { min: 1, max: 4, title: "幼儿园班 (AI 听风者)", chip: "🧸 代表角色：大雄（哆啦A梦）", desc: "你对 AI 还停留在“听过、试过”的阶段，遇到问题只会找 Google 或聊天机器人！" },
+            { min: 5, max: 8, title: "初小阶段 (被动伸手党)", chip: "🎒 代表角色：樱桃小丸子", desc: "你把 AI 当成赶作业的救星，习惯一键复制粘贴。主导权完全在 AI 手上！" },
+            { min: 9, max: 12, title: "高小阶段 (指令初体验)", chip: "💥 代表角色：野原新之助（蜡笔小新）", desc: "你开始懂得给 AI 设身份、定格式，还会纠正它的错误！" },
+            { min: 13, max: 16, title: "初中阶段 (脉络提供者)", chip: "🔍 代表角色：江户川柯南", desc: "你是 AI 界的万能导演！懂得提供丰富的背景脉络，让 AI 帮你精准产出文件。" },
+            { min: 17, max: 20, title: "高中阶段 (生产力专家)", chip: "🍥 代表角色：漩涡鸣人（影分身之术）", desc: "太强啦！你学会了“影分身之术”，开会、写代码、数据分析同时开工！" },
+            { min: 21, max: 24, title: "大学本科 (进阶定制者)", chip: "🛠️ 代表角色：布玛（龙珠发明家）", desc: "你不只用工具，你还懂得自己打造专属的 Custom GPTs 机器人和小脚本！" },
+            { min: 25, max: 28, title: "硕士生 (流程自动化者)", chip: "🤖 代表角色：钢铁侠（贾维斯管家）", desc: "你建立了自己的自动化生态！人不在电脑前，工作也能自动运作！" },
+            { min: 29, max: 32, title: "博士生／院士 (顶级开源神人)", chip: "🚪 代表角色：哆啦A梦（造物主级别）", desc: "神人级别！看透底层逻辑、本地部署、微调训练与 API 开发的顶级架构师！" }
+        ],
+        empty: { title: "尚未勾选任何项目", chip: "💤 代表角色：还在睡觉的胖虎", desc: "你好像还没有勾选任何项目喔！快去勾选几项来计算你的真实 AI 算力吧！" }
+    },
+    'en': {
+        title: "🧠 AI Power Health Check: Is Your 'AI Education' Graduated?",
+        quote: "\"The world won't be replaced by AI, but by humans who use AI first!\"",
+        t1: "Over the last few years, AI has exploded with ChatGPT, Claude, and Midjourney everywhere. Everyone talks about AI, but... is your prompt passing? Has your productivity actually doubled? Or are you just treating the world's most powerful brain as a fancy Google search or chatbot?",
+        t2: "This isn't a boring final exam—no coding or heavy theory. We've crafted 32 hyper-relatable everyday AI scenarios. Take just 3 minutes to check what you've mastered and unlock your AI chip tier instantly!",
+        calc: "Calculate My AI Power! ⚡",
+        reset: "Retest 🔄",
+        res: "Your Total Score",
+        counterText: "🚀 2046 Total Tests:",
+        secs: [
+            "1. 👶 Kindergarten: Nobita (AI Whisperer)",
+            "2. 🎒 Early Primary: Maruko (Passive Leech)",
+            "3. 🎒 Upper Primary: Shin-chan (Prompt Beginner)",
+            "4. 🏫 Junior High: Conan (Context Provider)",
+            "5. 🏫 Senior High: Naruto (Productivity Expert)",
+            "6. 🎓 Undergraduate: Bulma (Custom Creator)",
+            "7. 🧑‍🔬 Master's: Iron Man (Workflow Boss)",
+            "8. 🚀 Ph.D.: Doraemon (Open-Source God)"
+        ],
+        qs: [
+            "1. I have logged in and used at least one mainstream AI tool like ChatGPT, Copilot, Gemini, or Claude.",
+            "2. I have asked AI for simple casual or life searches (e.g., weather, celebrity bios, telling a joke).",
+            "3. I have had AI draft extremely simple daily messages (e.g., leave requests, greetings, daily emails).",
+            "4. I have pasted hard-to-understand foreign text into AI and asked it to translate into English.",
+            "5. I have directly asked AI to write drafts for daily homework, short articles, or social media posts.",
+            "6. After AI gives an answer, I usually copy-paste it directly without even fixing bracket placeholders.",
+            "7. When AI makes mistakes or hallucinates, I think it's just 'stupid' and give up instead of correcting it.",
+            "8. I treat AI like a more intuitive Google search to ask questions directly rather than browsing web pages.",
+            "9. When writing prompts, I know how to assign AI a specific role (e.g., 'Act as a professional...').",
+            "10. I restrict AI's output format in prompts (e.g., asking for a table, 5 key points, or under 300 words).",
+            "11. When the first output isn't ideal, I continue messaging to correct it (e.g., 'No, make it more humorous').",
+            "12. I have tried AI image generation tools (e.g., Midjourney, DALL-E 3) and successfully generated images.",
+            "13. I provide background context and scenarios when questioning, making AI responses fit my actual needs better.",
+            "14. I throw long PDF reports or news links to AI and ask it to summarize core highlights in seconds.",
+            "15. I know how to use AI to write or debug simple Excel formulas (e.g., VLOOKUP) or basic web code (HTML).",
+            "16. I have skillfully used built-in AI assistants in office software (e.g., Notion AI, M365 Copilot).",
+            "17. During meetings or lectures, I use AI voice-to-text tools and have AI automatically generate meeting minutes.",
+            "18. I cross-use different AI models for tasks (Claude for coding, o1/o3 for logic, GPT-4o for daily tasks).",
+            "19. I use AI for deep data analysis (uploading sales Excel files, having AI plot trend charts and analyze drops).",
+            "20. I leverage multimodal capabilities (uploading broken machine parts photos or handwritten drafts for diagnosis).",
+            "21. I have created custom GPTs or custom bots to handle repetitive daily tasks.",
+            "22. I use AI to cut daily documentation/data sorting time by over 50%, building my personal AI toolchain.",
+            "23. I know how to guide AI through multi-step logic reasoning, asking for its thought process rather than instant answers.",
+            "24. I can use AI independently to write small script automation tools (e.g., Python scripts for computer chores).",
+            "25. I use automation tools (Make, Zapier, n8n) to chain AI into workflows (email received -> auto AI analysis & reply).",
+            "26. I have used RAG technology to upload massive data, building a zero-hallucination custom knowledge base chatbot.",
+            "27. I am fluent in advanced prompting techniques (Chain-of-Thought, Few-shot prompting) for complex reasoning tasks.",
+            "28. I use AI Agent tools (Dify, Coze, CrewAI) to let multiple AIs collaborate as different roles on large projects.",
+            "29. I have deployed open-source LLMs locally or on cloud servers (e.g., Llama 3, DeepSeek, Mistral).",
+            "30. I have fine-tuned open-source models using my own professional domain data.",
+            "31. In development, I bypass web interfaces to directly call AI APIs, precisely tracking and controlling token costs.",
+            "32. I can write custom code to expand AI capabilities (writing Tools/Plugins for AI to call external databases/hardware)."
+        ],
+        results: [
+            { min: 1, max: 4, title: "Kindergarten (AI Whisperer)", chip: "🧸 Character: Nobita", desc: "You only use Google or chatbots. Doraemon is right there and you're using him for tissues!" },
+            { min: 5, max: 8, title: "Early Primary (Passive Leech)", chip: "🎒 Character: Maruko", desc: "You treat AI as a homework savior, blindly copy-pasting. AI holds all the power!" },
+            { min: 9, max: 12, title: "Upper Primary (Prompt Beginner)", chip: "💥 Character: Shin-chan", desc: "You set roles and formats, and correct mistakes! You enjoy battling AI." },
+            { min: 13, max: 16, title: "Junior High (Context Provider)", chip: "🔍 Character: Conan", desc: "You are the ultimate director providing rich context for high-quality summaries." },
+            { min: 17, max: 20, title: "Senior High (Productivity Expert)", chip: "🍥 Character: Naruto (Shadow Clones)", desc: "Meetings, coding, and data running simultaneously. AI is your digital secretary!" },
+            { min: 21, max: 24, title: "Undergraduate (Custom Creator)", chip: "🛠️ Character: Bulma", desc: "You build custom GPTs and scripts. A workplace super-inventor!" },
+            { min: 25, max: 28, title: "Master's (Automation Boss)", chip: "🤖 Character: Iron Man (JARVIS)", desc: "You've built an automation ecosystem working for you even when away!" },
+            { min: 29, max: 32, title: "Ph.D. / Academician (Open-Source God)", chip: "🚪 Character: Doraemon", desc: "God tier! Local deployment, fine-tuning, and API master. The future AI architect!" }
+        ],
+        empty: { title: "No items checked", chip: "💤 Character: Sleeping Gian", desc: "You haven't checked any items yet! Check some things to calculate your power!" }
+    },
+    'pt': {
+        title: "🧠 Check-up de IA: Sua 'Educação em IA' se formou?",
+        quote: "\"O mundo não será substituído pela IA, mas por humanos que usam IA primeiro!\"",
+        t1: "Nos últimos anos, a IA explodiu com ChatGPT, Claude e Midjourney em todo lugar. Todos falam de IA, mas... seu prompt está bom? Sua produtividade dobrou? Ou você só trata o cérebro mais poderoso do mundo como um Google glorificado?",
+        t2: "Esta não é uma prova chata — sem código ou teoria profunda. Criamos 32 cenários diários de IA. Leve apenas 3 minutos para marcar o que domina e desbloquear seu nível de chip de IA!",
+        calc: "Calcular meu Poder de IA! ⚡",
+        reset: "Refazer 🔄",
+        res: "Sua Pontuação Total",
+        counterText: "🚀 2046 Total de Testes:",
+        secs: [
+            "1. 👶 Jardim: Nobita (Sussurrador)",
+            "2. 🎒 Primário: Maruko (Sanguessuga)",
+            "3. 🎒 Superior: Shin-chan (Iniciante)",
+            "4. 🏫 Fundamental: Conan (Contexto)",
+            "5. 🏫 Médio: Naruto (Produtividade)",
+            "6. 🎓 Graduação: Bulma (Criador)",
+            "7. 🧑‍🔬 Mestrado: Homem de Ferro (Automação)",
+            "8. 🚀 Doutorado: Doraemon (Deus Aberto)"
+        ],
+        qs: [
+            "1. Usei ferramentas principais de IA como ChatGPT, Copilot, Gemini ou Claude.",
+            "2. Pedi buscas simples à IA (tempo, piadas, biografias).",
+            "3. Pedi à IA rascunhos de mensagens simples (pedidos, e-mails).",
+            "4. Colei texto estrangeiro na IA para traduzir.",
+            "5. Pedi diretamente à IA para escrever redações ou rascunhos de posts.",
+            "6. Copio e colo respostas da IA sem mudar marcações.",
+            "7. Quando a IA erra, desisto em vez de corrigir.",
+            "8. Trato a IA como um Google mais intuitivo para tirar dúvidas.",
+            "9. Defino funções para a IA nos comandos (ex: 'Aja como um profissional...').",
+            "10. Restrito o formato de saída da IA (tabelas, limites de palavras).",
+            "11. Quando a resposta falha, continuo conversando para corrigi-la.",
+            "12. Testei ferramentas de imagem por IA (Midjourney, DALL-E) e gerei imagens.",
+            "13. Forneço contexto ao perguntar para melhorar as respostas.",
+            "14. Jogo relatórios PDF longos na IA para resumir destaques.",
+            "15. Uso IA para criar/depurar fórmulas do Excel ou código HTML básico.",
+            "16. Uso assistentes de IA em softwares de escritório (Notion, Copilot).",
+            "17. Uso ferramentas de voz para texto de IA para gerar atas de reuniões.",
+            "18. Uso diferentes modelos de IA para tarefas variadas (Claude, GPT-4o).",
+            "19. Uso IA para análise profunda de dados e tendências.",
+            "20. Aproveito recursos multimodais (fotos ou rascunhos para diagnóstico).",
+            "21. Criei Custom GPTs ou bots para tarefas repetitivas.",
+            "22. Uso IA para cortar o tempo de documentação em mais de 50%.",
+            "23. Guio a IA por raciocínios lógicos em etapas.",
+            "24. Uso IA para criar scripts de automação (Python).",
+            "25. Uso ferramentas como Make/Zapier para conectar IA a fluxos de trabalho.",
+            "26. Usei RAG para construir chatbots sem alucinações.",
+            "27. Domino técnicas avançadas de prompt (Chain-of-Thought).",
+            "28. Uso ferramentas de IA Agent (Dify, CrewAI) para colaboração.",
+            "29. Implantei LLMs abertos localmente ou na nuvem (Llama 3, DeepSeek).",
+            "30. Fiz Fine-tuning em modelos abertos usando dados próprios.",
+            "31. Chamo APIs de IA diretamente e controlo custos de Tokens.",
+            "32. Escrevo código/plugins personalizados para a IA interagir com dados."
+        ],
+        results: [
+            { min: 1, max: 4, title: "Jardim de Infância (Sussurrador)", chip: "🧸 Personagem: Nobita", desc: "Você só usa o Google ou chatbots. O Doraemon está na sua frente e você só o usa para lenços!" },
+            { min: 5, max: 8, title: "Primário Inicial (Sanguessuga)", chip: "🎒 Personagem: Maruko", desc: "Você trata a IA como salvadora de tarefas, copiando e colando tudo cego." },
+            { min: 9, max: 12, title: "Primário Superior (Iniciante)", chip: "💥 Personagem: Shin-chan", desc: "Você já define papéis e formatos, corrigindo erros com diversão!" },
+            { min: 13, max: 16, title: "Ensino Fundamental (Contexto)", chip: "🔍 Personagem: Conan", desc: "Você é o diretor supremo fornecendo contexto rico para resumos." },
+            { min: 17, max: 20, title: "Ensino Médio (Produtividade)", chip: "🍥 Personagem: Naruto (Clones)", desc: "Reuniões, código e dados rodando juntos. A IA é sua secretária digital!" },
+            { min: 21, max: 24, title: "Graduação (Criador)", chip: "🛠️ Personagem: Bulma", desc: "Você cria Custom GPTs e scripts. Um superinventor no trabalho!" },
+            { min: 25, max: 28, title: "Mestrado (Chefe de Automação)", chip: "🤖 Personagem: Homem de Ferro", desc: "Você construiu um ecossistema de automação que trabalha por você!" },
+            { min: 29, max: 32, title: "Doutorado (Deus Aberto)", chip: "🚪 Personagem: Doraemon", desc: "Nível divino! Implantação local, ajuste fino e APIs. O arquiteto do futuro!" }
+        ],
+        empty: { title: "Nenhum item marcado", chip: "💤 Personagem: Gian Dormindo", desc: "Você ainda não marcou nenhum item para calcular seu poder!" }
+    },
+    'ja': {
+        title: "🧠 AIパワー健康診断：あなたの「AI学歴」は卒業した？",
+        quote: "「世界はAIに取って代わられるのではなく、『AIを使いこなす人』に取って代わられる！」",
+        t1: "ここ数年でAIが爆発的に普及し、ChatGPTやClaude、Midjourneyがあふれています。誰もがAIについて語っていますが…あなたのプロンプトは合格点ですか？仕事の効率は本当に2倍になりましたか？それとも、世界最強の頭脳を「ちょっと賢いGoogle検索」や「チャットボット」としてしか使っていませんか？",
+        t2: "これは退屈な期末試験ではありません。プログラミングや難しい理論のテストではなく、超日常的な32個のAI活用シーンを用意しました。わずか3分、実際にマスターしている項目をチェックして、あなたのAIチップレベルを即座に解放しましょう！",
+        calc: "AIパワーを計算する！ ⚡",
+        reset: "リセット 🔄",
+        res: "あなたの総得点",
+        counterText: "🚀 2046 総検出人数：",
+        secs: [
+            "1. 👶 幼稚園：のび太型",
+            "2. 🎒 小学校低学年：まる子型",
+            "3. 🎒 小学校高学年：しんちゃん型",
+            "4. 🏫 中学校：コナン型",
+            "5. 🏫 高学校：ナルト型",
+            "6. 🎓 大学：ブルマ型",
+            "7. 🧑‍🔬 大学院：アイアンマン型",
+            "8. 博士：ドラえもん型"
+        ],
+        qs: [
+            "1. ChatGPT、Copilot、GeminiなどのAIツールを使ったことがある。",
+            "2. AIに簡単な検索（天気、ジョークなど）を頼んだことがある。",
+            "3. AIに簡単なメッセージ（休暇届、メール）の作成を頼んだことがある。",
+            "4. 外国語をAIに貼り付けて翻訳してもらったことがある。",
+            "5. 宿題やSNS投稿のドラフトをAIに書いてもらったことがある。",
+            "6. AIの回答をそのままコピペして使っている。",
+            "7. AIが間違えても修正せず諦めてしまう。",
+            "8. Google検索の代わりにAIに直接質問する習慣がある。",
+            "9. プロンプトでAIに特定の役割を与えることを知っている。",
+            "10. AIの出力形式（表形式、要点）を制限したことがある。",
+            "11. 回答がいまいちな場合、メッセージを続けて修正する。",
+            "12. 画像生成AI（Midjourneyなど）を試し、画像を生成したことがある。",
+            "13. 質問時に背景コンテキストを補足し、ニーズに合わせられる。",
+            "14. 長いPDFレポートをAIに投げ、数秒で要約させたことがある。",
+            "15. Excel関数や基本HTMLをAIに書かせたりデバッグしたことがある。",
+            "16. オフィスソフトのAIアシスタント（Notion、Copilot）を使ったことがある。",
+            "17. AI音声文字起こしツールを使い、議事録を自動生成させている。",
+            "18. タスクに応じて異なるAIモデル（Claude、GPT-4o）を使い分けている。",
+            "19. AIを使って深いデータ分析やトレンド予測を行っている。",
+            "20. マルチモーダル機能（写真やラッシュの診断）を活用している。",
+            "21. 自分専用のCustom GPTsやカスタムボットを作成したことがある。",
+            "22. AIを活用して文書整理時間を50%以上短縮している。",
+            "23. 思考プロセスを説明させることで、AIを論理推論に導ける。",
+            "24. 小さな自動化スクリプトツール（Pythonなど）をAIで自作できる。",
+            "25. 自動化ツール（Make、Zapier）を使い、AIをワークフローに連携している。",
+            "26. RAG技術を使って専用のナレッジベースチャットボットを作ったことがある。",
+            "27. 高度なプロンプトテクニック（思考連鎖など）を使いこなせる。",
+            "28. AI Agentツール（Dify、CrewAI）で複数AIを協業させている。",
+            "29. オープンソースモデル（Llama 3、DeepSeek）をデプロイしたことがある。",
+            "30. 自分のデータを使ってオープンソースモデルをファインチューニングしたことがある。",
+            "31. APIを直接呼び出し、トークンコストを正確に制御している。",
+            "32. AIの能力を拡張するカスタムコード（Tool/Plugin）を書くことができる。"
+        ],
+        results: [
+            { min: 1, max: 4, title: "幼稚園（AIウィスパー）", chip: "🧸 キャラ：のび太", desc: "Googleやチャットボットに頼るだけ。ドラえもんが目の前にあるのにティッシュにしか使ってない！" },
+            { min: 5, max: 8, title: "小学校低学年（コピペ勢）", chip: "🎒 キャラ：まる子", desc: "AIを宿題の救世主として扱い、思考停止でコピペしている。" },
+            { min: 9, max: 12, title: "小学校高学年（初心者）", chip: "💥 キャラ：しんちゃん", desc: "役割やフォーマットを指定し、間違いを指摘できるようになっている！" },
+            { min: 13, max: 16, title: "中学校（コンテキスト提供者）", chip: "🔍 キャラ：コナン", desc: "豊かな背景コンテキストを提供し、高品質な要約を作らせることができる。" },
+            { min: 17, max: 20, title: "高等学校（生産性エキスパート）", chip: "🍥 キャラ：ナルト（影分身）", desc: "会議・コード・データ分析を同時にこなす。AIはフルタイムの秘書！" },
+            { min: 21, max: 24, title: "大学学部（カスタムクリエイター）", chip: "🛠️ キャラ：ブルマ", desc: "Custom GPTsやスクリプトを自作する職場のスーパー発明家！" },
+            { min: 25, max: 28, title: "大学院修士（自動化ボス）", chip: "🤖 キャラ：アイアンマン", desc: "自動化エコシステムを構築し、あなたが不在でもAIが働く！" },
+            { min: 29, max: 32, title: "博士（オープンソースの神）", chip: "🚪 キャラ：ドラえもん", desc: "ローカルデプロイ、ファインチューニング、APIを完全理解した未来のAIアーキテクト！" }
+        ],
+        empty: { title: "チェック項目がありません", chip: "💤 キャラ：寝ているジャイアン", desc: "まだどの項目もチェックされていません！チェックを入れてパワーを計算しよう！" }
+    }
+};
+
+let currentLang = 'zh-Hant';
+
+// 初始化或更新訪問人數（每次載入網頁都會自動 +1，保證一定會動！）
+let visitorCount = localStorage.getItem('ai_quiz_visitors');
+if (!visitorCount) {
+    visitorCount = 2046;
+} else {
+    visitorCount = parseInt(visitorCount) + 1; // 每次開網頁/重新整理自動增加
+}
+localStorage.setItem('ai_quiz_visitors', visitorCount);
+
+function updateCounterDisplay() {
+    const formatted = String(visitorCount).padStart(7, '0');
+    document.getElementById('visitorCount').innerText = formatted;
+}
+
+// 頁面載入時立即更新顯示
+window.addEventListener('DOMContentLoaded', () => {
+    updateCounterDisplay();
+});
+
+function switchLang(lang) {
+    currentLang = lang;
+    const data = langDatabase[lang];
+
+    document.getElementById('introTitle').innerText = data.title;
+    document.getElementById('introQuote').innerText = data.quote;
+    document.getElementById('introText1').innerText = data.t1;
+    document.getElementById('introText2').innerText = data.t2;
+    document.getElementById('resLabel').innerText = data.res;
+    document.getElementById('counterLabel').innerText = data.counterText || "🚀 2046 總檢測人數：";
+
+    for (let i = 1; i <= 8; i++) {
+        const secEl = document.getElementById('sec' + i);
+        if (secEl) secEl.innerText = data.secs[i - 1];
+    }
+
+    const qTexts = document.querySelectorAll('.question-text');
+    qTexts.forEach(el => {
+        const qid = parseInt(el.getAttribute('data-qid'));
+        if (data.qs && data.qs[qid]) {
+            el.innerText = data.qs[qid];
+        }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick').includes(lang)) {
+            btn.classList.add('active');
+        }
+    });
+
+    const resCard = document.getElementById('result-card');
+    if (resCard.style.display === 'block') {
+        calculateScore();
+    }
+}
+
+function calculateScore() {
+    // 每次按計算按鈕，人數也再 +1
+    visitorCount = parseInt(visitorCount) + 1;
+    localStorage.setItem('ai_quiz_visitors', visitorCount);
+    updateCounterDisplay();
+
+    const checked = document.querySelectorAll('input[name="q"]:checked');
+    const score = checked.length;
+    const data = langDatabase[currentLang];
+
+    let title = "";
+    let chip = "";
+    let desc = "";
+
+    if (score === 0) {
+        title = data.empty.title;
+        chip = data.empty.chip;
+        desc = data.empty.desc;
+    } else {
+        const matched = data.results.find(r => score >= r.min && score <= r.max);
+        if (matched) {
+            title = matched.title;
+            chip = matched.chip;
+            desc = matched.desc;
+        }
+    }
+
+    document.getElementById('scoreDisplay').innerText = score + " / 32 分";
+    document.getElementById('chipDisplay').innerText = chip;
+    document.getElementById('titleDisplay').innerText = title;
+    document.getElementById('descDisplay').innerText = desc;
+
+    const resCard = document.getElementById('result-card');
+    resCard.style.display = 'block';
+    resCard.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    document.querySelectorAll('input[name="q"]').forEach(cb => cb.checked = false);
+    document.getElementById('result-card').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
